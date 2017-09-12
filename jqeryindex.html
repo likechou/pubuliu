@@ -1,0 +1,198 @@
+<!doctype>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>瀑布流</title>
+	<style type="text/css">
+		*{
+	margin:0;
+	padding:0;
+}
+#main{
+	position:relative;
+	margin:0,auto;
+}
+.box
+{
+	padding-left:10px;
+	padding-top:10px;
+	float:left;
+}
+.pic{
+	padding:10px;
+	border:1px solid #ccc;
+	border-radius:5px;
+	box-shadow:0,0,5px,5px;
+}
+.pic img{
+	width:190px;
+}
+
+	</style>
+</head>
+<body>
+	
+	<div id="main">
+		<div class="box">
+			<div class="pic">
+				<img src="image/0.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/1.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/2.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/3.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/4.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/5.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/6.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/7.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/8.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/9.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/10.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/11.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/12.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/13.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/14.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/15.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/16.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/17.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/18.jpg">
+			</div>
+		</div>
+		<div class="box">
+			<div class="pic">
+				<img src="image/19.jpg">
+			</div>
+		</div>
+	
+	</div>
+</body>
+<script type="text/javascript" src="jquery-1.8.3.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+	rankpic();
+	var dataInt={"data":[{"src":"1.jpg"},{"src":"2.jpg"},{"src":"3.jpg"},{"src":"4.jpg"},{"src":"5.jpg"},{"src":"6.jpg"}]}
+		$(window).on("scroll",function(){
+		//window.onscroll=function(){
+		if(addPic())
+		{
+			$.each(dataInt.data,function(index,value)
+				{
+					var box =$("<div></div>").addClass("box").appendTo($("#main"));
+					var pic = $("<div></div>").addClass("pic").appendTo($(box));
+					var img =$("<img>").attr("src","image/"+value.src).appendTo($(pic));
+			})
+			
+			rankpic();
+
+		}
+	}
+	)
+})
+function rankpic()
+{
+		var boxs = $("#main>.box");
+		var picWidth = boxs.eq(0).outerWidth(); //获取一个box的宽度
+		//console.log(picWidth);
+		var cols = Math.floor($(window).width()/picWidth);//表示有多少列
+		$("#main").width(picWidth *cols).css("margin","0 auto");
+		var boxHeight = new Array();
+		boxs.each(function(i,value){
+			if(i<cols)
+				boxHeight.push(boxs.eq(i).outerHeight());
+			else{
+				var minHeighht = Math.min.apply(null,boxHeight);
+				var index = $.inArray(minHeighht,boxHeight);
+				$(value).css({"position":"absolute","top":minHeighht+'px',"left":picWidth*index+'px'})
+				boxHeight[index]+= boxs.eq(i).outerHeight() ;
+			}
+		})
+}
+function addPic()
+{
+		// var main = document.getElementById("main");
+		// var boxs = main.getElementsByClassName("box");
+		// var bHight =boxs[boxs.length-1].offsetTop +Math.floor(boxs[boxs.length-1].offsetHeight/2);
+		// var sHight = document.documentElement.scrollTop||document.body.scrollTop;
+		// var clientHeight = document.documentElement.clientHeight||document.body.clientHeight;
+		// console.log(bHight);
+		// console.log(sHight);
+		// console.log(clientHeight);
+		// return (sHight+clientHeight>bHight);
+		var $lastBox=$("#main>div:last");
+			var bHight=$lastBox.offset().top+Math.floor($lastBox.outerHeight()/2);
+			var sHight=$(window).scrollTop();
+			var clientHeight=$(window).height();
+			return (sHight+clientHeight>bHight);
+}
+</script>
+</html>
